@@ -1,0 +1,8 @@
+Xcursor.theme: Adwaita
+urxvt.foreground: black
+urxvt.background: white
+urxvt.scrollBar: false
+urxvt.font: xft:M+ 2m:size=10:antialias=true
+urxvt.boldFont: xft:M+ 2m:size=10:antialias=true
+urxvt.italicFont: xft:M+ 2m:size=10:antialias=true
+urxvt.boldItalicFont: xft:M+ 2m:size=10:antialias=true
