@@ -3,6 +3,7 @@ no_buffers yes
 out_to_x no
 out_to_console yes
 update_interval 0.1
+short_units yes
 
 TEXT
 uptime:${uptime_short}  \
@@ -11,7 +12,7 @@ cpu:${cpu}%  \
 mem:${memperc}%  \
 swap:${swapperc}%    \
 fs:${fs_used_perc /}%  \
-io:${diskio}  \
+io:${diskio}    \
 addr:${addrs wlan0}  \
-up:${upspeedf wlan0}  \
-down:${downspeedf wlan0}
+up:${upspeed wlan0}  \
+down:${downspeed wlan0}
