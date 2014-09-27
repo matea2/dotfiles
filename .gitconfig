@@ -1,0 +1,9 @@
+[user]
+	name = user-name
+	email = user-email
+[core]
+	excludesfile = ~/.gitignore
+[color]
+	ui = auto
+[push]
+	default = simple
