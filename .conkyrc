@@ -1,0 +1,17 @@
+background no
+no_buffers yes
+out_to_x no
+out_to_console yes
+update_interval 0.1
+
+TEXT
+uptime:${uptime_short}  \
+proc:${processes}    \
+cpu:${cpu}%  \
+mem:${memperc}%  \
+swap:${swapperc}%    \
+fs:${fs_used_perc /}%  \
+io:${diskio}  \
+addr:${addrs wlan0}  \
+up:${upspeedf wlan0}  \
+down:${downspeedf wlan0}
