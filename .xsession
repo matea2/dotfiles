@@ -42,6 +42,7 @@ pulseaudio -D
 nm-applet --sm-disable &
 fcitx -r -d
 urxvtd -q -o -f
+conky -d
 nitrogen --restore
 xscreensaver -no-splash &
 xcompmgr &
