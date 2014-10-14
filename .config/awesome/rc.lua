@@ -226,6 +226,13 @@ root.buttons(awful.util.table.join(
 	awful.button({ }, 4, awful.tag.viewnext),
 	awful.button({ }, 5, awful.tag.viewprev)
 ))
+
+clientbuttons = awful.util.table.join(
+	awful.button({ modkey }, 1, function(c) c:lower() end),
+	awful.button({ modkey, "Shift" }, 1, awful.mouse.client.move),
+	awful.button({ modkey }, 3, function(c) c:raise() end),
+	awful.button({ modkey, "Shift" }, 3, awful.mouse.client.resize)
+)
 -- }}}
 
 -- {{{ Key bindings
@@ -373,13 +380,6 @@ for i = 1, 5 do
 		end)
 	)
 end
-
-clientbuttons = awful.util.table.join(
-	awful.button({ modkey }, 1, function(c) c:lower() end),
-	awful.button({ modkey, "Shift" }, 1, awful.mouse.client.move),
-	awful.button({ modkey }, 3, function(c) c:raise() end),
-	awful.button({ modkey, "Shift" }, 3, awful.mouse.client.resize)
-)
 
 -- Set keys
 root.keys(globalkeys)
