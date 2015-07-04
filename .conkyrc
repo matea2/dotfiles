@@ -1,12 +1,14 @@
-background no
-no_buffers yes
-out_to_x no
-out_to_console no
-update_interval 1.0
-short_units yes
-overwrite_file /tmp/conkytext.tmp
+conky.config = {
+	background = true,
+	no_buffers = true,
+	out_to_x = false,
+	out_to_console = false,
+	short_units = true,
+	update_interval = 1.0,
+	overwrite_file = "/tmp/conkytext.tmp",
+}
 
-TEXT
+conky.text = [[\
 uptime:${uptime_short}  \
 proc:${processes}    \
 cpu:${cpu}%  \
@@ -16,4 +18,5 @@ fs:${fs_used_perc /}%  \
 io:${diskio}    \
 addr:${addrs wlan0}  \
 up:${upspeed wlan0}  \
-down:${downspeed wlan0}
+down:${downspeed wlan0}\
+]]
