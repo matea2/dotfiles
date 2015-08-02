@@ -445,7 +445,7 @@ end)
 
 -- {{{ Naughty
 for key, value in pairs({ naughty.config.presets.low, naughty.config.presets.normal, naughty.config.presets.critical }) do
-	value.width = 320
+	value.width = 360
 	value.border_width = 2
 	value.icon_size = 48
 	value.position = "bottom_right"
