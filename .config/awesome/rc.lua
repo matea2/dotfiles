@@ -293,7 +293,13 @@ globalkeys = awful.util.table.join(
 		mypromptbox[mouse.screen].widget,
 		awful.util.eval, nil,
 		awful.util.getdir("cache") .. "/history_eval")
-	end)
+	end),
+
+	-- Move mouse cursor
+	awful.key({ modkey, "Mod1" }, "h", function() mouse.coords({ x = mouse.coords().x - 50, y = mouse.coords().y }) end),
+	awful.key({ modkey, "Mod1" }, "j", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 50 }) end),
+	awful.key({ modkey, "Mod1" }, "k", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 50 }) end),
+	awful.key({ modkey, "Mod1" }, "l", function() mouse.coords({ x = mouse.coords().x + 50, y = mouse.coords().y }) end)
 )
 
 clientkeys = awful.util.table.join(
