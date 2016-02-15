@@ -237,9 +237,9 @@ clientbuttons = awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-	awful.key({ modkey }, "Left", awful.tag.viewprev),
-	awful.key({ modkey }, "Right", awful.tag.viewnext),
-	awful.key({ modkey }, "Escape", awful.tag.history.restore),
+	-- awful.key({ modkey }, "Left", awful.tag.viewprev),
+	-- awful.key({ modkey }, "Right", awful.tag.viewnext),
+	-- awful.key({ modkey }, "Escape", awful.tag.history.restore),
 
 	awful.key({ modkey }, "j", function()
 		awful.client.focus.byidx(1)
@@ -296,10 +296,35 @@ globalkeys = awful.util.table.join(
 	end),
 
 	-- Move mouse cursor
-	awful.key({ modkey, "Mod1" }, "h", function() mouse.coords({ x = mouse.coords().x - 50, y = mouse.coords().y }) end),
-	awful.key({ modkey, "Mod1" }, "j", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 50 }) end),
-	awful.key({ modkey, "Mod1" }, "k", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 50 }) end),
-	awful.key({ modkey, "Mod1" }, "l", function() mouse.coords({ x = mouse.coords().x + 50, y = mouse.coords().y }) end)
+	awful.key({ modkey }, "Left", function() mouse.coords({ x = mouse.coords().x - 50, y = mouse.coords().y }) end),
+	awful.key({ modkey }, "Down", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 50 }) end),
+	awful.key({ modkey }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 50 }) end),
+	awful.key({ modkey }, "Right", function() mouse.coords({ x = mouse.coords().x + 50, y = mouse.coords().y }) end),
+
+	awful.key({ modkey, "Control" }, "Left", function() mouse.coords({ x = mouse.coords().x - 10, y = mouse.coords().y }) end),
+	awful.key({ modkey, "Control" }, "Down", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 10 }) end),
+	awful.key({ modkey, "Control" }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 10 }) end),
+	awful.key({ modkey, "Control" }, "Right", function() mouse.coords({ x = mouse.coords().x + 10, y = mouse.coords().y }) end),
+
+	awful.key({ modkey, "Shift" }, "Left", function() mouse.coords({ x = mouse.coords().x - 300, y = mouse.coords().y }) end),
+	awful.key({ modkey, "Shift" }, "Down", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 300 }) end),
+	awful.key({ modkey, "Shift" }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 300 }) end),
+	awful.key({ modkey, "Shift" }, "Right", function() mouse.coords({ x = mouse.coords().x + 300, y = mouse.coords().y }) end),
+
+	awful.key({ modkey }, "Escape", function()
+		if mouse.coords().x == 0 and mouse.coords().y == 0 then
+			mouse.coords({
+				x = screen[mouse.screen].geometry.width / 2,
+				y = screen[mouse.screen].geometry.height / 2
+			})
+		else
+			mouse.coords({ x = 0, y = 0 })
+		end
+	end),
+
+	awful.key({ modkey, "Mod1" }, "Left", function() awful.util.spawn("xdotool click 1") end),
+	awful.key({ modkey, "Mod1" }, "Down", function() awful.util.spawn("xdotool click 2") end),
+	awful.key({ modkey, "Mod1" }, "Right", function() awful.util.spawn("xdotool click 3") end)
 )
 
 clientkeys = awful.util.table.join(
