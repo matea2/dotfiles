@@ -42,7 +42,8 @@ nm-applet --sm-disable &
 fcitx -r -d
 urxvtd -q -o -f
 conky
-nitrogen --restore
+#nitrogen --restore
+feh --randomize --bg-max --no-fehbg ~/.config/feh/background
 xscreensaver -no-splash &
 xcompmgr &
 
