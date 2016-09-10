@@ -43,7 +43,7 @@ fcitx -r -d
 urxvtd -q -o -f
 conky
 #nitrogen --restore
-feh --randomize --bg-max --no-fehbg ~/.config/feh/background
+ls -d ~/.config/feh/background/* | shuf -n 1 | feh --bg-max --filelist -
 xscreensaver -no-splash &
 xcompmgr &
 
