@@ -35,6 +35,7 @@ xmodmap -e "keysym Henkan = Super_L"
 
 xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Tap Action" 0, 0, 0, 0, 0, 0, 0
 xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Edge Scrolling" 1, 1, 0
+xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 
 ## アプリケーション
 pulseaudio -D
