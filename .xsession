@@ -46,6 +46,7 @@ conky -d
 ls -d ~/.config/feh/background/* | shuf -n 1 | feh --bg-max --filelist -
 xscreensaver -no-splash &
 xcompmgr &
+cbatticon &
 
 ## ウィンドウマネージャ
 exec awesome
