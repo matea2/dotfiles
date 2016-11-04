@@ -35,14 +35,13 @@ xmodmap -e "keysym Henkan = Super_L"
 
 xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Tap Action" 0, 0, 0, 0, 0, 0, 0
 xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Edge Scrolling" 1, 1, 0
-xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
+#xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 
 ## アプリケーション
 pulseaudio -D
-nm-applet --sm-disable &
 fcitx -r -d
 urxvtd -q -o -f
-conky
+conky -d
 #nitrogen --restore
 ls -d ~/.config/feh/background/* | shuf -n 1 | feh --bg-max --filelist -
 xscreensaver -no-splash &
