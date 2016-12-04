@@ -38,7 +38,7 @@ xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Edge Scrolling" 1, 1, 0
 #xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 
 ## アプリケーション
-pulseaudio -D
+#pulseaudio -D
 fcitx -r -d
 urxvtd -q -o -f
 conky -d
