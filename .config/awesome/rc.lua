@@ -46,7 +46,7 @@ end
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
-mymainmenu = awful.menu({
+globalmenu = awful.menu({
 	items = {
 		{
 			"awesome",
@@ -60,13 +60,8 @@ mymainmenu = awful.menu({
 	}
 })
 
-mymainlauncher = awful.widget.launcher({
-	image = awesome.load_image(awful.util.getdir("config") .. "/images/menu"),
-	menu = mymainmenu
-})
-
 -- Create a laucher widget and a window menu
-mywindowmenu = awful.menu({
+clientmenu = awful.menu({
 	items = {
 		{ "close", function() client.focus:kill() end },
 		{ "lower", function() client.focus:lower() end },
@@ -75,16 +70,16 @@ mywindowmenu = awful.menu({
 		{ "floating", function() awful.client.floating.toggle(client.focus) end }
 	}
 })
-
-mywindowlauncher = awful.widget.launcher({
-	image = awesome.load_image(awful.util.getdir("config") .. "/images/close"),
-	menu = mywindowmenu
-})
 -- }}}
 
 -- {{{ Wibox (top)
 -- Create a wibox for each screen and add it
 mytitlewibox = { }
+
+mymainlauncher = awful.widget.launcher({
+	image = awesome.load_image(awful.util.getdir("config") .. "/images/menu"),
+	menu = globalmenu
+})
 
 mypromptbox = { }
 
@@ -124,6 +119,11 @@ mytasklist.buttons = awful.util.table.join(
 	end)
 )
 
+mywindowlauncher = awful.widget.launcher({
+	image = awesome.load_image(awful.util.getdir("config") .. "/images/close"),
+	menu = clientmenu
+})
+
 for s = 1, screen.count() do
 	-- Create a promptbox for each screen
 	mypromptbox[s] = awful.widget.prompt()
@@ -154,20 +154,6 @@ end
 -- }}}
 
 -- {{{ Wibox (bottom)
--- Create a textclock widget
-mytextclock = awful.widget.textclock(" %Y-%m-%d %a %H:%M:%S ", 1)
-
--- Create a statustext widget
-mystatustext = wibox.widget.textbox()
-local mytimer = timer({ timeout = 1 })
-mytimer:connect_signal("timeout", function()
-	local file = io.open("/tmp/conkytext.tmp")
-	mystatustext:set_markup(file:read("*all"))
-	file:close()
-end)
-mytimer:start()
-mytimer:emit_signal("timeout")
-
 -- Create a wibox for each screen and add it
 mystatuswibox = { }
 
@@ -182,6 +168,20 @@ mytaglist.buttons = awful.util.table.join(
 )
 
 mylayoutbox = { }
+
+-- Create a statustext widget
+mystatustext = wibox.widget.textbox()
+local mytimer = timer({ timeout = 1 })
+mytimer:connect_signal("timeout", function()
+	local file = io.open("/tmp/conkytext.tmp")
+	mystatustext:set_markup(file:read("*all"))
+	file:close()
+end)
+mytimer:start()
+mytimer:emit_signal("timeout")
+
+-- Create a textclock widget
+mytextclock = awful.widget.textclock(" %Y-%m-%d %a %H:%M:%S ", 1)
 
 for s = 1, screen.count() do
 	-- Create a taglist widget
@@ -222,7 +222,7 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-	awful.button({ }, 3, function() mymainmenu:toggle() end),
+	awful.button({ }, 3, function() globalmenu:toggle() end),
 	awful.button({ }, 4, awful.tag.viewnext),
 	awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -250,10 +250,10 @@ globalkeys = awful.util.table.join(
 		if client.focus then client.focus:raise() end
 	end),
 	awful.key({ modkey }, "w", function()
-		mymainmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
+		globalmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
 	end),
 	awful.key({ modkey, "Shift" }, "w", function()
-		mywindowmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
+		clientmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
 	end),
 
 	-- Layout manipulation
@@ -327,25 +327,6 @@ globalkeys = awful.util.table.join(
 	awful.key({ modkey, "Mod1" }, "Right", function() awful.util.spawn("xdotool click 3") end)
 )
 
-clientkeys = awful.util.table.join(
-	awful.key({ modkey }, "f", function(c) c.fullscreen = not c.fullscreen end),
-	awful.key({ modkey, "Shift" }, "c", function(c) c:kill() end),
-	awful.key({ modkey, "Control" }, "space", awful.client.floating.toggle),
-	awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end),
-	awful.key({ modkey }, "o", awful.client.movetoscreen),
-	awful.key({ modkey, "Shift" }, "r", function(c) c:redraw() end),
-	awful.key({ modkey }, "t", function(c) c.ontop = not c.ontop end),
-	awful.key({ modkey }, "n", function(c)
-		-- The client currently has the input focus, so it cannot be
-		-- minimized, since minimized clients can't have the focus.
-		c.minimized = true
-	end),
-	awful.key({ modkey }, "m", function(c)
-		c.maximized_horizontal = not c.maximized_horizontal
-		c.maximized_vertical = not c.maximized_vertical
-	end)
-)
-
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -414,6 +395,27 @@ end
 
 -- Set keys
 root.keys(globalkeys)
+-- }}}
+
+-- {{{ Client Key bindings
+clientkeys = awful.util.table.join(
+	awful.key({ modkey }, "f", function(c) c.fullscreen = not c.fullscreen end),
+	awful.key({ modkey, "Shift" }, "c", function(c) c:kill() end),
+	awful.key({ modkey, "Control" }, "space", awful.client.floating.toggle),
+	awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end),
+	awful.key({ modkey }, "o", awful.client.movetoscreen),
+	awful.key({ modkey, "Shift" }, "r", function(c) c:redraw() end),
+	awful.key({ modkey }, "t", function(c) c.ontop = not c.ontop end),
+	awful.key({ modkey }, "n", function(c)
+		-- The client currently has the input focus, so it cannot be
+		-- minimized, since minimized clients can't have the focus.
+		c.minimized = true
+	end),
+	awful.key({ modkey }, "m", function(c)
+		c.maximized_horizontal = not c.maximized_horizontal
+		c.maximized_vertical = not c.maximized_vertical
+	end)
+)
 -- }}}
 
 -- {{{ Rules
