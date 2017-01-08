@@ -56,7 +56,24 @@ globalmenu = awful.menu({
 			},
 			beautiful.awesome_icon
 		},
-		{ "open terminal", terminal }
+		{
+			"applications",
+			{
+				{ "open terminal", terminal }
+			}
+		},
+		{
+			"volume",
+			{
+				{ "mute/unmute", function() awful.util.spawn("pactl set-sink-mute 0 toggle") end },
+				{ "volume 10%", function() awful.util.spawn("pactl set-sink-volume 0 10%") end },
+				{ "volume 20%", function() awful.util.spawn("pactl set-sink-volume 0 20%") end },
+				{ "volume 30%", function() awful.util.spawn("pactl set-sink-volume 0 30%") end },
+				{ "volume 40%", function() awful.util.spawn("pactl set-sink-volume 0 40%") end },
+				{ "volume 50%", function() awful.util.spawn("pactl set-sink-volume 0 50%") end }
+			},
+		}
+
 	}
 })
 
