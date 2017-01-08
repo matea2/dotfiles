@@ -337,11 +337,7 @@ globalkeys = awful.util.table.join(
 		else
 			mouse.coords({ x = 0, y = 0 })
 		end
-	end),
-
-	awful.key({ modkey, "Mod1" }, "Left", function() awful.util.spawn("xdotool click 1") end),
-	awful.key({ modkey, "Mod1" }, "Down", function() awful.util.spawn("xdotool click 2") end),
-	awful.key({ modkey, "Mod1" }, "Right", function() awful.util.spawn("xdotool click 3") end)
+	end)
 )
 
 -- Bind all key numbers to tags.
