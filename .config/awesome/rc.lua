@@ -18,7 +18,7 @@ editor = "vi"
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-local layouts =
+awful.layout.layouts =
 {
 	awful.layout.suit.floating,
 	awful.layout.suit.tile,
@@ -31,17 +31,12 @@ local layouts =
 	awful.layout.suit.spiral.dwindle,
 	awful.layout.suit.max,
 	awful.layout.suit.max.fullscreen,
-	awful.layout.suit.magnifier
+	awful.layout.suit.magnifier,
+	awful.layout.suit.corner.nw,
+	-- awful.layout.suit.corner.ne,
+	-- awful.layout.suit.corner.sw,
+	-- awful.layout.suit.corner.se,
 }
--- }}}
-
--- {{{ Tags
--- Define a tag table which hold all screen tags.
-tags = { }
-for s = 1, screen.count() do
-	-- Each screen has its own tag table.
-	tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, layouts[1])
-end
 -- }}}
 
 -- {{{ Menu
@@ -73,7 +68,6 @@ globalmenu = awful.menu({
 				{ "volume 50%", function() awful.util.spawn("pactl set-sink-volume 0 50%") end }
 			},
 		}
-
 	}
 })
 
@@ -89,105 +83,24 @@ clientmenu = awful.menu({
 })
 -- }}}
 
--- {{{ Wibox (top)
--- Create a wibox for each screen and add it
-mytitlewibox = { }
-
-mymainlauncher = awful.widget.launcher({
-	image = awesome.load_image(awful.util.getdir("config") .. "/images/menu"),
+-- {{{ Widgets
+globalmenu_launcher = awful.widget.launcher({
+	image = awesome.load_image(awful.util.get_configuration_dir() .. "images/menu"),
 	menu = globalmenu
 })
 
-mypromptbox = { }
-
-mytasklist = { }
-mytasklist.buttons = awful.util.table.join(
-	awful.button({ }, 1, function(c)
-		if c == client.focus then
-			c.minimized = true
-		else
-			-- Without this, the following
-			-- :isvisible() makes no sense
-			c.minimized = false
-			if not c:isvisible() then
-				awful.tag.viewonly(c:tags()[1])
-			end
-			-- This will also un-minimize
-			-- the client, if needed
-			client.focus = c
-			c:raise()
-		end
-	end),
-	awful.button({ }, 3, function()
-		if instance then
-			instance:hide()
-			instance = nil
-		else
-			instance = awful.menu.clients({ width = 250 })
-		end
-	end),
-	awful.button({ }, 4, function()
-		awful.client.focus.byidx(1)
-		if client.focus then client.focus:raise() end
-	end),
-	awful.button({ }, 5, function()
-		awful.client.focus.byidx(-1)
-		if client.focus then client.focus:raise() end
-	end)
-)
-
-mywindowlauncher = awful.widget.launcher({
-	image = awesome.load_image(awful.util.getdir("config") .. "/images/close"),
+clientmenu_launcher = awful.widget.launcher({
+	image = awesome.load_image(awful.util.get_configuration_dir() .. "images/close"),
 	menu = clientmenu
 })
 
-for s = 1, screen.count() do
-	-- Create a promptbox for each screen
-	mypromptbox[s] = awful.widget.prompt()
-
-	-- Create a tasklist widget
-	mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
-
-	-- Create the wibox
-	mytitlewibox[s] = awful.wibox({ position = "top", screen = s })
-
-	-- Widgets that are aligned to the left
-	local top_left_layout = wibox.layout.fixed.horizontal()
-	top_left_layout:add(mymainlauncher)
-	top_left_layout:add(mypromptbox[s])
-
-	-- Widgets that are aligned to the right
-	local top_right_layout = wibox.layout.fixed.horizontal()
-	top_right_layout:add(mywindowlauncher)
-
-	-- Now bring it all together (with the tasklist in the middle)
-	local top_layout = wibox.layout.align.horizontal()
-	top_layout:set_left(top_left_layout)
-	top_layout:set_middle(mytasklist[s])
-	top_layout:set_right(top_right_layout)
-
-	mytitlewibox[s]:set_widget(top_layout)
-end
--- }}}
-
--- {{{ Wibox (bottom)
--- Create a wibox for each screen and add it
-mystatuswibox = { }
-
-mytaglist = { }
-mytaglist.buttons = awful.util.table.join(
-	awful.button({ }, 1, awful.tag.viewonly),
-	awful.button({ modkey }, 1, awful.client.movetotag),
-	awful.button({ }, 3, awful.tag.viewtoggle),
-	awful.button({ modkey }, 3, awful.client.toggletag),
-	awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-	awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-)
-
-mylayoutbox = { }
+-- Create a textclock widget
+mytextclock = awful.widget.textclock(" %Y-%m-%d %a %H:%M:%S ", 1)
 
 -- Create a statustext widget
 mystatustext = wibox.widget.textbox()
+mystatustext.align = "center"
+mystatustext.valign = "center"
 local mytimer = timer({ timeout = 1 })
 mytimer:connect_signal("timeout", function()
 	local file = io.open("/tmp/conkytext.tmp")
@@ -196,45 +109,57 @@ mytimer:connect_signal("timeout", function()
 end)
 mytimer:start()
 mytimer:emit_signal("timeout")
+-- }}}
 
--- Create a textclock widget
-mytextclock = awful.widget.textclock(" %Y-%m-%d %a %H:%M:%S ", 1)
+-- {{{ Screen
+awful.screen.connect_for_each_screen(function(s)
+	-- Wallpaper
+	--set_wallpaper(s)
 
-for s = 1, screen.count() do
-	-- Create a taglist widget
-	mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
+	-- Each screen has its own tag table.
+	awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
-	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
-	-- We need one layoutbox per screen.
-	mylayoutbox[s] = awful.widget.layoutbox(s)
-	mylayoutbox[s]:buttons(awful.util.table.join(
-		awful.button({ }, 1, function() awful.layout.inc(layouts, 1) end),
-		awful.button({ }, 3, function() awful.layout.inc(layouts, -1) end),
-		awful.button({ }, 4, function() awful.layout.inc(layouts, 1) end),
-		awful.button({ }, 5, function() awful.layout.inc(layouts, -1) end)
-	))
+	-- Create widgets for each screen
+	s.mypromptbox = awful.widget.prompt()
+	s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
+	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
+	s.mylayoutbox = awful.widget.layoutbox(s)
 
-	-- Create the wibox
-	mystatuswibox[s] = awful.wibox({ position = "bottom", screen = s })
+	-- Create the wibox (top)
+	s.mytitlewibox = awful.wibar({ position = "top", screen = s })
 
-	-- Widgets that are aligned to the left
-	local left_layout = wibox.layout.fixed.horizontal()
-	left_layout:add(mytaglist[s])
-	left_layout:add(mylayoutbox[s])
+	s.mytitlewibox:setup {
+		layout = wibox.layout.align.horizontal,
+		{
+			layout = wibox.layout.fixed.horizontal,
+			globalmenu_launcher,
+			s.mypromptbox,
+		},
+		s.mytasklist,
+		{
+			layout = wibox.layout.fixed.horizontal,
+			clientmenu_launcher,
+		},
+	}
 
-	-- Widgets that are aligned to the right
-	local right_layout = wibox.layout.fixed.horizontal()
-	if s == 1 then right_layout:add(wibox.widget.systray()) end
-	right_layout:add(mytextclock)
+	-- Create the wibox (bottom)
+	s.mystatuswibox = awful.wibar({ position = "bottom", screen = s })
 
-	-- Now bring it all together (with the tasklist in the middle)
-	local layout = wibox.layout.align.horizontal()
-	layout:set_left(left_layout)
-	layout:set_middle(mystatustext)
-	layout:set_right(right_layout)
-
-	mystatuswibox[s]:set_widget(layout)
-end
+	s.mystatuswibox:setup {
+		layout = wibox.layout.align.horizontal,
+		{
+			layout = wibox.layout.fixed.horizontal,
+			s.mytaglist,
+			s.mylayoutbox,
+		},
+		mystatustext,
+		{
+			layout = wibox.layout.fixed.horizontal,
+			wibox.widget.systray(),
+			mytextclock,
+		},
+	}
+end)
 -- }}}
 
 -- {{{ Mouse bindings
@@ -250,6 +175,9 @@ clientbuttons = awful.util.table.join(
 	awful.button({ modkey }, 3, function(c) c:raise() end),
 	awful.button({ modkey, "Shift" }, 3, awful.mouse.client.resize)
 )
+
+local tasklist_buttons = { }
+local taglist_buttons = { }
 -- }}}
 
 -- {{{ Key bindings
@@ -303,13 +231,15 @@ globalkeys = awful.util.table.join(
 	awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
 	-- Prompt
-	awful.key({ modkey }, "r", function() mypromptbox[mouse.screen]:run() end),
+	awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end),
 
 	awful.key({ modkey }, "x", function()
-		awful.prompt.run({ prompt = "Run Lua code: " },
-		mypromptbox[mouse.screen].widget,
-		awful.util.eval, nil,
-		awful.util.getdir("cache") .. "/history_eval")
+		awful.prompt.run {
+			prompt = "Run Lua code: ",
+			textbox = awful.screen.focused().mypromptbox.widget,
+			exe_callback = awful.util.eval,
+			history_path = awful.util.get_cache_dir() .. "/history_eval"
+		}
 	end),
 
 	-- Move mouse cursor
@@ -451,7 +381,7 @@ awful.rules.rules = {
 	--   properties = { tag = tags[1][2] } },
 	{
 		rule = { class = "URxvt" },
-		properties = { icon = awesome.load_image(awful.util.getdir("config") .. "/images/terminal") }
+		properties = { icon = awesome.load_image(awful.util.get_configuration_dir() .. "images/terminal") }
 	}
 }
 -- }}}
