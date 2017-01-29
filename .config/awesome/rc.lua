@@ -67,6 +67,16 @@ globalmenu = awful.menu({
 				{ "volume 40%", function() awful.util.spawn("pactl set-sink-volume 0 40%") end },
 				{ "volume 50%", function() awful.util.spawn("pactl set-sink-volume 0 50%") end }
 			},
+		},
+		{
+			"brightness",
+			{
+				{ "brightness 10%", function() awful.spawn("xbacklight -set 10") end },
+				{ "brightness 20%", function() awful.spawn("xbacklight -set 20") end },
+				{ "brightness 30%", function() awful.spawn("xbacklight -set 30") end },
+				{ "brightness 40%", function() awful.spawn("xbacklight -set 40") end },
+				{ "brightness 50%", function() awful.spawn("xbacklight -set 50") end }
+			},
 		}
 	}
 })
