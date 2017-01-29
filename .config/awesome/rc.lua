@@ -1,4 +1,5 @@
 -- Standard awesome library
+local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
@@ -105,13 +106,13 @@ clientmenu_launcher = awful.widget.launcher({
 })
 
 -- Create a textclock widget
-mytextclock = awful.widget.textclock(" %Y-%m-%d %a %H:%M:%S ", 1)
+mytextclock = wibox.widget.textclock(" %Y-%m-%d %a %H:%M:%S ", 1)
 
 -- Create a statustext widget
 mystatustext = wibox.widget.textbox()
 mystatustext.align = "center"
 mystatustext.valign = "center"
-local mytimer = timer({ timeout = 1 })
+local mytimer = gears.timer({ timeout = 1 })
 mytimer:connect_signal("timeout", function()
 	local file = io.open("/tmp/conkytext.tmp")
 	mystatustext:set_markup(file:read("*all"))
