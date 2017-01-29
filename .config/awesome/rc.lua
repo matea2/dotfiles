@@ -60,12 +60,12 @@ globalmenu = awful.menu({
 		{
 			"volume",
 			{
-				{ "mute/unmute", function() awful.util.spawn("pactl set-sink-mute 0 toggle") end },
-				{ "volume 10%", function() awful.util.spawn("pactl set-sink-volume 0 10%") end },
-				{ "volume 20%", function() awful.util.spawn("pactl set-sink-volume 0 20%") end },
-				{ "volume 30%", function() awful.util.spawn("pactl set-sink-volume 0 30%") end },
-				{ "volume 40%", function() awful.util.spawn("pactl set-sink-volume 0 40%") end },
-				{ "volume 50%", function() awful.util.spawn("pactl set-sink-volume 0 50%") end }
+				{ "mute/unmute", function() awful.spawn("pactl set-sink-mute 0 toggle") end },
+				{ "volume 10%", function() awful.spawn("pactl set-sink-volume 0 10%") end },
+				{ "volume 20%", function() awful.spawn("pactl set-sink-volume 0 20%") end },
+				{ "volume 30%", function() awful.spawn("pactl set-sink-volume 0 30%") end },
+				{ "volume 40%", function() awful.spawn("pactl set-sink-volume 0 40%") end },
+				{ "volume 50%", function() awful.spawn("pactl set-sink-volume 0 50%") end }
 			},
 		},
 		{
@@ -225,7 +225,7 @@ globalkeys = awful.util.table.join(
 	end),
 
 	-- Standard program
-	awful.key({ modkey }, "Return", function() awful.util.spawn(terminal) end),
+	awful.key({ modkey }, "Return", function() awful.spawn(terminal) end),
 	awful.key({ modkey, "Control" }, "r", awesome.restart),
 	awful.key({ modkey, "Shift" }, "q", awesome.quit),
 
