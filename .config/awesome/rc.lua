@@ -174,11 +174,11 @@ end)
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(awful.util.table.join(
+rootbuttons = awful.util.table.join(
 	awful.button({ }, 3, function() globalmenu:toggle() end),
 	awful.button({ }, 4, awful.tag.viewnext),
 	awful.button({ }, 5, awful.tag.viewprev)
-))
+)
 
 clientbuttons = awful.util.table.join(
 	awful.button({ modkey }, 1, function(c) c:lower() end),
@@ -187,29 +187,71 @@ clientbuttons = awful.util.table.join(
 	awful.button({ modkey, "Shift" }, 3, awful.mouse.client.resize)
 )
 
-local tasklist_buttons = { }
-local taglist_buttons = { }
+local tasklist_buttons = awful.util.table.join(
+	awful.button({ }, 1, function(c)
+		if c == client.focus then
+			c.minimized = true
+		else
+			-- Without this, the following
+			-- :isvisible() makes no sense
+			c.minimized = false
+			if not c:isvisible() and c.first_tag then
+				c.first_tag:view_only()
+			end
+			-- This will also un-minimize
+			-- the client, if needed
+			client.focus = c
+			c:raise()
+		end
+	end),
+	-- awful.button({ }, 3, client_menu_toggle_fn()),
+	awful.button({ }, 4, function()
+		awful.client.focus.byidx(1)
+	end),
+	awful.button({ }, 5, function()
+		awful.client.focus.byidx(-1)
+	end)
+)
+
+local taglist_buttons = awful.util.table.join(
+	awful.button({ }, 1, function(t) t:view_only() end),
+	awful.button({ modkey }, 1, function(t)
+		if client.focus then
+			client.focus:move_to_tag(t)
+		end
+	end),
+	awful.button({ }, 3, awful.tag.viewtoggle),
+	awful.button({ modkey }, 3, function(t)
+		if client.focus then
+			client.focus:toggle_tag(t)
+		end
+	end),
+	awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+	awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+)
 -- }}}
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 	-- awful.key({ modkey }, "Left", awful.tag.viewprev),
 	-- awful.key({ modkey }, "Right", awful.tag.viewnext),
-	-- awful.key({ modkey }, "Escape", awful.tag.history.restore),
+	awful.key({ modkey }, "Escape", awful.tag.history.restore),
 
-	awful.key({ modkey }, "j", function()
-		awful.client.focus.byidx(1)
-		if client.focus then client.focus:raise() end
-	end),
-	awful.key({ modkey }, "k", function()
-		awful.client.focus.byidx(-1)
-		if client.focus then client.focus:raise() end
-	end),
+	awful.key({ modkey }, "j", function() awful.client.focus.byidx(1) end),
+	awful.key({ modkey }, "k", function() awful.client.focus.byidx(-1) end),
+
 	awful.key({ modkey }, "w", function()
-		globalmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
+		globalmenu:show({
+			keygrabber = true,
+			coords = { x = 0, y = 0 }
+		})
 	end),
 	awful.key({ modkey, "Shift" }, "w", function()
-		clientmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
+		-- clientmenu:show({ keygrabber = true, coords = { x = 0, y = 0 } })
+		clientmenu:show({
+			keygrabber = true,
+			coords = { x = awful.screen.focused().geometry.width, y = 0 }
+		})
 	end),
 
 	-- Layout manipulation
@@ -236,10 +278,17 @@ globalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "l", function() awful.tag.incnmaster(-1) end),
 	awful.key({ modkey, "Control" }, "h", function() awful.tag.incncol(1) end),
 	awful.key({ modkey, "Control" }, "l", function() awful.tag.incncol(-1) end),
-	awful.key({ modkey }, "space", function() awful.layout.inc(layouts, 1) end),
-	awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(layouts, -1) end),
+	awful.key({ modkey }, "space", function() awful.layout.inc(1) end),
+	awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end),
 
-	awful.key({ modkey, "Control" }, "n", awful.client.restore),
+	awful.key({ modkey, "Control" }, "n", function()
+		local c = awful.client.restore()
+		-- Focus restored client
+		if c then
+			client.focus = c
+			c:raise()
+		end
+	end),
 
 	-- Prompt
 	awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end),
@@ -269,11 +318,11 @@ globalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 300 }) end),
 	awful.key({ modkey, "Shift" }, "Right", function() mouse.coords({ x = mouse.coords().x + 300, y = mouse.coords().y }) end),
 
-	awful.key({ modkey }, "Escape", function()
+	awful.key({ modkey }, "Zenkaku_Hankaku", function()
 		if mouse.coords().x == 0 and mouse.coords().y == 0 then
 			mouse.coords({
-				x = screen[mouse.screen].geometry.width / 2,
-				y = screen[mouse.screen].geometry.height / 2
+				x = awful.screen.focused().geometry.width / 2,
+				y = awful.screen.focused().geometry.height / 2
 			})
 		else
 			mouse.coords({ x = 0, y = 0 })
@@ -289,16 +338,16 @@ for i = 1, 5 do
 		globalkeys,
 		-- View tag only.
 		awful.key({ modkey }, "#" .. i + 9, function()
-			local screen = mouse.screen
-			local tag = awful.tag.gettags(screen)[i]
+			local screen = awful.screen.focused()
+			local tag = screen.tags[i]
 			if tag then
-				awful.tag.viewonly(tag)
+				tag:view_only()
 			end
 		end),
 		-- Toggle tag.
 		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function()
-			local screen = mouse.screen
-			local tag = awful.tag.gettags(screen)[i]
+			local screen = awful.screen.focused()
+			local tag = screen.tags[i]
 			if tag then
 				awful.tag.viewtoggle(tag)
 			end
@@ -306,18 +355,18 @@ for i = 1, 5 do
 		-- Move client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9, function()
 			if client.focus then
-				local tag = awful.tag.gettags(client.focus.screen)[i]
+				local tag = client.focus.screen.tags[i]
 				if tag then
-					awful.client.movetotag(tag)
+					client.focus:move_to_tag(tag)
 				end
 			end
 		end),
-		-- Toggle tag.
+		-- Toggle tag on focused client.
 		awful.key({ modkey, "Control" }, "#" .. i + 9, function()
 			if client.focus then
-				local tag = awful.tag.gettags(client.focus.screen)[i]
+				local tag = client.focus.screen.tags[i]
 				if tag then
-					awful.client.toggletag(tag)
+					client.focus:toggle_tag(tag)
 				end
 			end
 		end),
@@ -346,9 +395,6 @@ for i = 1, 5 do
 		end)
 	)
 end
-
--- Set keys
-root.keys(globalkeys)
 -- }}}
 
 -- {{{ Client Key bindings
@@ -372,6 +418,11 @@ clientkeys = awful.util.table.join(
 )
 -- }}}
 
+-- {{{ Set keys and buttons
+root.buttons(rootbuttons)
+root.keys(globalkeys)
+-- }}}
+
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -381,9 +432,12 @@ awful.rules.rules = {
 		properties = {
 			border_width = beautiful.border_width,
 			border_color = beautiful.border_normal,
-			focus = true,
+			focus = awful.client.focus.filter,
+			raise = true,
 			keys = clientkeys,
 			buttons = clientbuttons,
+			screen = awful.screen.preferred,
+			placement = awful.placement.no_overlap+awful.placement.no_offscreen,
 			size_hints_honor = false
 		}
 	},
@@ -399,24 +453,21 @@ awful.rules.rules = {
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage", function(c, startup)
-	-- Enable sloppy focus
-	c:connect_signal("mouse::enter", function(c)
-		if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and awful.client.focus.filter(c) then
-			client.focus = c
-		end
-	end)
+client.connect_signal("manage", function(c)
+	-- Set the windows at the slave,
+	-- i.e. put it at the end of others instead of setting it master.
+	-- if not awesome.startup then awful.client.setslave(c) end
 
-	if not startup then
-		-- Set the windows at the slave,
-		-- i.e. put it at the end of others instead of setting it master.
-		-- awful.client.setslave(c)
+	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+		-- Prevent clients from being unreachable after screen count changes.
+		awful.placement.no_offscreen(c)
+	end
+end)
 
-		-- Put windows in a smart way, only if they does not set an initial position.
-		if not c.size_hints.user_position and not c.size_hints.program_position then
-			awful.placement.no_overlap(c)
-			awful.placement.no_offscreen(c)
-		end
+-- Enable sloppy focus, so that focus follows mouse.
+client.connect_signal("mouse::enter", function(c)
+	if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and awful.client.focus.filter(c) then
+		client.focus = c
 	end
 end)
 
@@ -424,6 +475,7 @@ client.connect_signal("focus", function(c)
 	c.border_color = beautiful.border_focus
 	c.opacity = 1
 end)
+
 client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 	c.opacity = 0.6
