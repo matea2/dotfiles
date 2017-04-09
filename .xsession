@@ -30,8 +30,8 @@ export QT_IM_MODULE=fcitx
 xset b off
 xsetroot -cursor_name Adwaita
 setxkbmap -model jp106 -layout jp -option "ctrl:swapcaps"
-xmodmap -e "keysym Muhenkan = Super_L"
-xmodmap -e "keysym Henkan = Super_L"
+xmodmap -e "add mod4 = Muhenkan"
+xmodmap -e "add mod5 = Henkan"
 
 xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Tap Action" 0, 0, 0, 0, 0, 0, 0
 xinput --set-prop "AlpsPS/2 ALPS GlidePoint" "Synaptics Edge Scrolling" 1, 1, 0

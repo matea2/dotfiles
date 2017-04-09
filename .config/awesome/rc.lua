@@ -303,22 +303,28 @@ globalkeys = awful.util.table.join(
 	end),
 
 	-- Move mouse cursor
-	awful.key({ modkey }, "Left", function() mouse.coords({ x = mouse.coords().x - 50, y = mouse.coords().y }) end),
-	awful.key({ modkey }, "Down", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 50 }) end),
-	awful.key({ modkey }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 50 }) end),
-	awful.key({ modkey }, "Right", function() mouse.coords({ x = mouse.coords().x + 50, y = mouse.coords().y }) end),
+	awful.key({ "Mod5" }, "h", function() mouse.coords({ x = mouse.coords().x - 50, y = mouse.coords().y }) end),
+	awful.key({ "Mod5" }, "j", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 50 }) end),
+	awful.key({ "Mod5" }, "k", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 50 }) end),
+	awful.key({ "Mod5" }, "l", function() mouse.coords({ x = mouse.coords().x + 50, y = mouse.coords().y }) end),
 
-	awful.key({ modkey, "Control" }, "Left", function() mouse.coords({ x = mouse.coords().x - 10, y = mouse.coords().y }) end),
-	awful.key({ modkey, "Control" }, "Down", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 10 }) end),
-	awful.key({ modkey, "Control" }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 10 }) end),
-	awful.key({ modkey, "Control" }, "Right", function() mouse.coords({ x = mouse.coords().x + 10, y = mouse.coords().y }) end),
+	awful.key({ "Mod5", "Control" }, "h", function() mouse.coords({ x = mouse.coords().x - 10, y = mouse.coords().y }) end),
+	awful.key({ "Mod5", "Control" }, "j", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 10 }) end),
+	awful.key({ "Mod5", "Control" }, "k", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 10 }) end),
+	awful.key({ "Mod5", "Control" }, "l", function() mouse.coords({ x = mouse.coords().x + 10, y = mouse.coords().y }) end),
 
-	awful.key({ modkey, "Shift" }, "Left", function() mouse.coords({ x = mouse.coords().x - 300, y = mouse.coords().y }) end),
-	awful.key({ modkey, "Shift" }, "Down", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 300 }) end),
-	awful.key({ modkey, "Shift" }, "Up", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 300 }) end),
-	awful.key({ modkey, "Shift" }, "Right", function() mouse.coords({ x = mouse.coords().x + 300, y = mouse.coords().y }) end),
+	awful.key({ "Mod5", "Shift" }, "h", function() mouse.coords({ x = mouse.coords().x - 300, y = mouse.coords().y }) end),
+	awful.key({ "Mod5", "Shift" }, "j", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y + 300 }) end),
+	awful.key({ "Mod5", "Shift" }, "k", function() mouse.coords({ x = mouse.coords().x, y = mouse.coords().y - 300 }) end),
+	awful.key({ "Mod5", "Shift" }, "l", function() mouse.coords({ x = mouse.coords().x + 300, y = mouse.coords().y }) end),
 
-	awful.key({ modkey }, "Zenkaku_Hankaku", function()
+	awful.key({ "Mod5" }, "i", function() awful.spawn("xdotool click 1") end),
+	awful.key({ "Mod5" }, "u", function() awful.spawn("xdotool click 2") end),
+	awful.key({ "Mod5" }, "o", function() awful.spawn("xdotool click 3") end),
+	awful.key({ "Mod5" }, "p", function() awful.spawn("xdotool click 4") end),
+	awful.key({ "Mod5" }, "n", function() awful.spawn("xdotool click 5") end),
+
+	awful.key({ "Mod5" }, "m", function()
 		if mouse.coords().x == 0 and mouse.coords().y == 0 then
 			mouse.coords({
 				x = awful.screen.focused().geometry.width / 2,
