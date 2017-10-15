@@ -1,5 +1,5 @@
 URxvt.font: xft:Noto Sans Mono CJK JP:size=10
-URxvt.letterSpace: -3
+URxvt.letterSpace: -2
 URxvt.foreground: black
 URxvt.background: white
 URxvt.scrollBar: false
