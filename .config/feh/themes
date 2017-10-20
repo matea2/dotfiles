@@ -1,1 +1,1 @@
-feh --cycle-once --scale-down --hide-pointer --no-fehbg --draw-filename --fontpath "/usr/share/fonts/TTF/" --font "mplus-2m-medium/12"
+feh --cycle-once --scale-down --hide-pointer --no-fehbg --draw-filename --fontpath "/usr/share/fonts/noto/" --font "NotoSansMono-Medium/12"
