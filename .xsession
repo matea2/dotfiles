@@ -42,8 +42,7 @@ xmodmap -e "add mod5 = Henkan"
 fcitx -r -d
 urxvtd -q -o -f
 conky -d
-#nitrogen --restore
-ls -d ~/.config/feh/background/* | shuf -n 1 | feh --bg-max --filelist -
+nitrogen --restore
 xscreensaver -no-splash &
 xcompmgr &
 cbatticon &
