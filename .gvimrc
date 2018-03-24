@@ -1,8 +1,8 @@
 " Windows用
 
 winpos 640 320
-set columns=110
-set lines=30
+set columns=100
+set lines=28
 
 colorscheme lucius
 
@@ -11,6 +11,7 @@ set cmdheight=1
 
 set nobackup
 set writebackup
-set backupdir=~/vimfiles/backup/
 set directory=~/vimfiles/backup/
+set backupdir=~/vimfiles/backup/
 set undodir=~/vimfiles/backup/
+set viminfo+=n~/vimfiles/_viminfo

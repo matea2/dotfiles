@@ -8,7 +8,6 @@ set showcmd
 set nrformats=hex
 set ambiwidth=double
 set formatoptions+=mM
-"set viminfo=
 
 " 文字コード
 set encoding=utf-8
