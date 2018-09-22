@@ -47,25 +47,34 @@ globalmenu = awful.menu({
 			"awesome",
 			{
 				{ "restart", awesome.restart },
-				{ "quit", awesome.quit }
+				{ "quit", awesome.quit },
 			},
 			beautiful.awesome_icon
 		},
 		{
 			"applications",
 			{
-				{ "open terminal", terminal }
-			}
+				{ "open terminal", terminal },
+			},
+		},
+		{
+			"sound",
+			{
+				{ "sink 0: speaker", function() awful.spawn("pactl set-default-sink 0") end },
+				{ "sink 1: headphone", function() awful.spawn("pactl set-default-sink 1") end },
+				{ "sink: mute/unmute", function() awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle") end },
+				{ "sink: mute", function() awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ 1") end },
+				{ "sink: unmute", function() awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ 0") end },
+			},
 		},
 		{
 			"volume",
 			{
-				{ "mute/unmute", function() awful.spawn("pactl set-sink-mute 0 toggle") end },
-				{ "volume 10%", function() awful.spawn("pactl set-sink-volume 0 10%") end },
-				{ "volume 20%", function() awful.spawn("pactl set-sink-volume 0 20%") end },
-				{ "volume 30%", function() awful.spawn("pactl set-sink-volume 0 30%") end },
-				{ "volume 40%", function() awful.spawn("pactl set-sink-volume 0 40%") end },
-				{ "volume 50%", function() awful.spawn("pactl set-sink-volume 0 50%") end }
+				{ "volume 10%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ 10%") end },
+				{ "volume 30%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ 30%") end },
+				{ "volume 50%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ 50%") end },
+				{ "volume -5%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%") end },
+				{ "volume +5%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%") end },
 			},
 		},
 		{
@@ -75,9 +84,9 @@ globalmenu = awful.menu({
 				{ "brightness 20%", function() awful.spawn("xbacklight -set 20") end },
 				{ "brightness 30%", function() awful.spawn("xbacklight -set 30") end },
 				{ "brightness 40%", function() awful.spawn("xbacklight -set 40") end },
-				{ "brightness 50%", function() awful.spawn("xbacklight -set 50") end }
+				{ "brightness 50%", function() awful.spawn("xbacklight -set 50") end },
 			},
-		}
+		},
 	}
 })
 
