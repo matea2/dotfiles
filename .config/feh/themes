@@ -1,4 +1,4 @@
-feh --cycle-once \
+feh --on-last-slide=quit \
 --scale-down \
 --hide-pointer \
 --no-fehbg \
