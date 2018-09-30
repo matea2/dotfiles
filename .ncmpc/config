@@ -1,1 +1,2 @@
+enable-colors = no
 list-format = "%artist% - %album% : %track%. %title%|%file%"
