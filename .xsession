@@ -28,7 +28,6 @@ export QT_IM_MODULE=fcitx
 
 ## X設定
 xset b off
-xsetroot -cursor_name Adwaita
 setxkbmap -model jp106 -layout jp -option "ctrl:swapcaps"
 xmodmap -e "add mod4 = Muhenkan"
 xmodmap -e "add mod5 = Henkan"
