@@ -73,17 +73,13 @@ globalmenu = awful.menu({
 				{ "volume 10%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ 10%") end },
 				{ "volume 30%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ 30%") end },
 				{ "volume 50%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ 50%") end },
-				{ "volume -5%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%") end },
-				{ "volume +5%", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%") end },
 			},
 		},
 		{
 			"brightness",
 			{
 				{ "brightness 10%", function() awful.spawn("xbacklight -set 10") end },
-				{ "brightness 20%", function() awful.spawn("xbacklight -set 20") end },
 				{ "brightness 30%", function() awful.spawn("xbacklight -set 30") end },
-				{ "brightness 40%", function() awful.spawn("xbacklight -set 40") end },
 				{ "brightness 50%", function() awful.spawn("xbacklight -set 50") end },
 			},
 		},
@@ -310,6 +306,12 @@ globalkeys = awful.util.table.join(
 			history_path = awful.util.get_cache_dir() .. "/history_eval"
 		}
 	end),
+
+	-- Device
+	awful.key({ modkey }, "Left", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%") end),
+	awful.key({ modkey }, "Right", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%") end),
+	awful.key({ modkey }, "Up", function() awful.spawn("xbacklight -inc 10") end),
+	awful.key({ modkey }, "Down", function() awful.spawn("xbacklight -dec 10") end),
 
 	-- Move mouse cursor
 	awful.key({ "Mod5" }, "h", function() mouse.coords({ x = mouse.coords().x - 50, y = mouse.coords().y }) end),
