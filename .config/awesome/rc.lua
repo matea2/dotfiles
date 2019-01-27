@@ -122,7 +122,8 @@ mystatustext.align = "center"
 mystatustext.valign = "center"
 local mytimer = gears.timer({ timeout = 1 })
 mytimer:connect_signal("timeout", function()
-	local file = io.open("/tmp/conkytext.tmp")
+	-- local file = io.open("/tmp/conkytext.tmp")
+	local file = io.open(awful.util.get_cache_dir() .. "conky.tmp")
 	mystatustext:set_markup(file:read("*all"))
 	file:close()
 end)
