@@ -3,5 +3,5 @@ feh --on-last-slide=quit \
 --hide-pointer \
 --no-fehbg \
 --draw-filename \
---fontpath "/usr/share/fonts/TTF/" \
---font "mplus-2m-medium/12"
+--fontpath "/usr/share/fonts/noto-cjk/" \
+--font "NotoSansCJK-Regular.ttc/12"
