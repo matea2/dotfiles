@@ -1,2 +1,3 @@
 intf=ncurses
 color=0
+play-and-exit=1
