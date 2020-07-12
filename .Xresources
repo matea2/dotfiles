@@ -1,8 +1,0 @@
-URxvt.font: xft:Noto Sans Mono CJK JP:size=10
-URxvt.letterSpace: -2
-URxvt.foreground: black
-URxvt.background: white
-URxvt.scrollBar: false
-Xcursor.theme: Adwaita
-Xft.dpi: 96
-Xft.antialias: 1

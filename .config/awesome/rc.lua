@@ -11,7 +11,7 @@ local naughty = require("naughty")
 beautiful.init(awful.util.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvtc -e tmux"
+terminal = "termite -e tmux"
 editor = "vi"
 
 -- Default modkey.
@@ -462,8 +462,7 @@ awful.rules.rules = {
 	-- { rule = { class = "Firefox" },
 	--   properties = { tag = tags[1][2] } },
 	{
-		rule = { class = "URxvt" },
-		properties = { icon = awesome.load_image(awful.util.get_configuration_dir() .. "images/terminal") }
+
 	}
 }
 -- }}}

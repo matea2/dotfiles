@@ -39,7 +39,6 @@ xmodmap -e "add mod5 = Henkan"
 ## アプリケーション
 #pulseaudio -D
 fcitx -r -d
-urxvtd -q -o -f
 conky -d
 nitrogen --restore
 xscreensaver -no-splash &
