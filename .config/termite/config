@@ -1,0 +1,9 @@
+[options]
+font = Monospace 9
+font = Noto Sans Mono CJK JP 12
+icon_name = terminal
+
+[colors]
+foreground = #0d0015
+background = #fbfaf5
+highlight = #b9d08b
