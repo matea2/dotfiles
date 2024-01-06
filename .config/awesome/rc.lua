@@ -11,7 +11,7 @@ local naughty = require("naughty")
 beautiful.init(awful.util.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "termite -e tmux"
+terminal = "alacritty -e tmux"
 editor = "vi"
 
 -- Default modkey.
@@ -423,6 +423,7 @@ clientkeys = awful.util.table.join(
 	awful.key({ modkey }, "o", awful.client.movetoscreen),
 	awful.key({ modkey, "Shift" }, "r", function(c) c:redraw() end),
 	awful.key({ modkey }, "t", function(c) c.ontop = not c.ontop end),
+	awful.key({ modkey }, "s", function(c) c.sticky = not c.sticky end),
 	awful.key({ modkey }, "n", function(c)
 		-- The client currently has the input focus, so it cannot be
 		-- minimized, since minimized clients can't have the focus.
