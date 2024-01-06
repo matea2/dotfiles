@@ -1,0 +1,12 @@
+font:
+  normal:
+    family: monospace
+    family: 'Noto Sans Mono CJK JP'
+
+colors:
+  primary:
+    #background: '#1d1f21'
+    background: '#fbfaf5'
+
+    # foreground: '#c5c8c6'
+    foreground: '#0d0015'
